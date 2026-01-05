@@ -1,5 +1,6 @@
-import React from 'react';
-import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
+import React, { useEffect } from 'react';
+import { BrowserRouter as Router, Routes, Route, useLocation, useNavigate } from 'react-router-dom';
+import { App as CapacitorApp } from '@capacitor/app';
 import Home from './pages/Home';
 import Settings from './pages/Settings';
 import SubjectDetail from './pages/SubjectDetail';
@@ -7,9 +8,29 @@ import Navbar from './components/Navbar';
 
 const Layout = ({ children }) => {
   const location = useLocation();
-  // Don't show navbar on detail page if you want a cleaner look, 
-  // but for this request "bottom nav bar" implies it might be persistent.
-  // I'll keep it persistent for the main tabs.
+  const navigate = useNavigate();
+
+  // Handle Android Back Button
+  useEffect(() => {
+    const handleBackButton = async () => {
+      CapacitorApp.addListener('backButton', ({ canGoBack }) => {
+        if (location.pathname === '/') {
+          // If on home screen, minimize the app (or exit if you prefer)
+          CapacitorApp.minimizeApp();
+        } else {
+          // Otherwise go back in history
+          navigate(-1);
+        }
+      });
+    };
+
+    handleBackButton();
+
+    return () => {
+      CapacitorApp.removeAllListeners();
+    };
+  }, [location, navigate]);
+
   const showNavbar = ['/', '/settings'].includes(location.pathname);
 
   return (

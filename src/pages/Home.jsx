@@ -1,16 +1,6 @@
 import React from 'react';
 import { useNavigate } from 'react-router-dom';
-
-const subjects = [
-  { id: 'java', name: 'Java', color: '#e67e22' },
-  { id: 'cpp', name: 'C++', color: '#2980b9' },
-  { id: 'python', name: 'Python', color: '#f1c40f' },
-  { id: 'ds', name: 'Data Structures', color: '#27ae60' },
-  { id: 'ml', name: 'Machine Learning', color: '#8e44ad' },
-  { id: 'os', name: 'Operating Systems', color: '#34495e' },
-  { id: 'net', name: 'Networking', color: '#e74c3c' },
-  { id: 'dbms', name: 'DBMS', color: '#16a085' },
-];
+import { subjects } from '../data/store';
 
 const Home = () => {
   const navigate = useNavigate();
